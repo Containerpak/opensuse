@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   packages: write
+  attestations: write
   id-token: write
 
 concurrency:
@@ -46,7 +47,8 @@ jobs:
           pull: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          provenance: false
+          provenance: mode=max
+          sbom: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -69,20 +71,18 @@ jobs:
 
       - name: Install cpak-sign
         run: |
-          curl -fsSLO https://github.com/Containerpak/cpak/releases/download/v2.10.3/cpak-sign-linux-amd64
-          echo 'd6239f54c773ab1e7eb9baf58fad9d92525f967ef5f85a468dc63e2bd3e5c229  cpak-sign-linux-amd64' | sha256sum -c -
+          curl -fsSLO https://github.com/Containerpak/cpak/releases/download/v2.10.4/cpak-sign-linux-amd64
+          echo '3f0feeb0c2428de8205ea0380635d9e334bdbd46ff6917647cf1e8f16265e424  cpak-sign-linux-amd64' | sha256sum -c -
           install -Dm755 cpak-sign-linux-amd64 /usr/local/bin/cpak-sign
 
       - name: Sign the package state
         env:
           CPAK_REGISTRY_USERNAME: ${{ github.actor }}
           CPAK_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-          IMAGE_DIGEST: ${{ steps.build.outputs.digest }}
         run: |
           cpak-sign state \
             --origin github.com/containerpak/opensuse \
-            --generation "${{ github.run_number }}" \
-            --image-digest "$IMAGE_DIGEST"
+            --generation "${{ github.run_number }}"
           cosign sign-blob --yes --new-bundle-format=true \
             --bundle cpak-state.sigstore.json cpak-state
           cpak-sign attach --image ghcr.io/containerpak/opensuse-cpak
