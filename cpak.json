@@ -15,7 +15,7 @@
   "override": {
     "displayX11": false,
     "socketWayland": false,
-    "socketPulseAudio": false,
+    "socketPulseAudio": true,
     "socketSshAgent": false,
     "socketCups": false,
     "socketGpgAgent": false,
@@ -23,7 +23,7 @@
     "deviceDri": false,
     "deviceKvm": false,
     "deviceShm": false,
-    "deviceAlsa": false,
+    "deviceAlsa": true,
     "deviceVideo": false,
     "deviceFuse": false,
     "deviceTun": false,
