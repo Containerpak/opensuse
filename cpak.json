@@ -4,7 +4,7 @@
   "name": "openSUSE Tumbleweed",
   "description": "openSUSE Tumbleweed for persistent development and system environments.",
   "version": "tumbleweed",
-  "image": "ghcr.io/containerpak/opensuse-cpak@sha256:2d5db8692c7284d45e1662baf1424a76c5ac37616723b7fedfcc0f6048879865",
+  "image": "ghcr.io/containerpak/opensuse-cpak@sha256:2dba6e6e2088d7b565e9b9710819e57d108a211e1db52ab794291a18deb94e61",
   "binaries": [
     "/bin/bash"
   ],
